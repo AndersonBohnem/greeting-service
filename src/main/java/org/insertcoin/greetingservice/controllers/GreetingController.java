@@ -1,19 +1,15 @@
 package org.insertcoin.greetingservice.controllers;
 
 import org.insertcoin.greetingservice.configs.GreetingConfig;
-import org.springframework.beans.factory.annotation.Value;
+import org.insertcoin.greetingservice.dto.GreetingRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("greeting")
 public class GreetingController {
-
-//    @Value("${greeting-service.greeting}")
-//    private String greeting;
-//
-//    @Value("${greeting-service.default-name}")
-//    private String defaultName;
 
     public GreetingController(GreetingConfig config) {
         this.config = config;
@@ -21,14 +17,33 @@ public class GreetingController {
 
     private final GreetingConfig config;
 
-    @GetMapping
+    @GetMapping({"", "/{pathName}"})
     public ResponseEntity<String> greeting(
-            @RequestParam(required = false) String name
+            @PathVariable Optional<String> pathName,
+            @RequestParam(required = false) String queryName
     ) {
         String greetingReturn = config.getGreeting();
-        String nameReturn = name != null ? name : config.getDefaultName();
+
+        String nameReturn = queryName != null
+                ? queryName
+                : pathName.orElse(config.getDefaultName());
+
         String textReturn = String.format("%s, %s!!!", greetingReturn, nameReturn);
 
         return ResponseEntity.ok(textReturn);
     }
+
+    @PostMapping
+    public ResponseEntity<String> greetingPost(
+            @RequestBody GreetingRequest request
+    ) {
+        String greetingReturn = config.getGreeting();
+
+        String nameReturn = request.getName();
+
+        String textReturn = String.format("%s, %s!!!", greetingReturn, nameReturn);
+
+        return ResponseEntity.ok(textReturn);
+    }
+
 }

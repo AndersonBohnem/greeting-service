@@ -1,6 +1,6 @@
 package org.insertcoin.greetingservice.dto;
 
-public class GreetingRequest {
+public class GreetingDto {
     private String name;
 
     public String getName() {

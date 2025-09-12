@@ -1,7 +1,7 @@
 package org.insertcoin.greetingservice.controllers;
 
 import org.insertcoin.greetingservice.configs.GreetingConfig;
-import org.insertcoin.greetingservice.dto.GreetingRequest;
+import org.insertcoin.greetingservice.dto.GreetingDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,7 @@ public class GreetingController {
 
     @PostMapping
     public ResponseEntity<String> greetingPost(
-            @RequestBody GreetingRequest request
+            @RequestBody GreetingDto request
     ) {
         String greetingReturn = config.getGreeting();
 
